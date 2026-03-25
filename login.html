@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HubOn – Gestão de Patrimônio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="login-page">
+
+  <!-- Background full-screen -->
+  <img class="login-bg" id="loginBg" src="login_bg.gif" alt="" />
+  <div class="login-overlay"></div>
+  <div class="login-divider"></div>
+
+  <!-- Painel de login -->
+  <div class="login-panel">
+
+    <div class="login-logo-wrap">
+      <img id="loginLogo" src="" alt="HubOn" class="login-logo-img" />
+      <p class="login-tagline">Gestão de Patrimônio</p>
+    </div>
+
+    <h1 class="login-title">Bem-vindo<br>de volta</h1>
+    <p class="login-subtitle">Acesse com suas credenciais para continuar.</p>
+
+    <div class="login-error" id="loginError">Usuário ou senha incorretos.</div>
+
+    <div class="login-form-group">
+      <label>Usuário</label>
+      <div class="login-input-wrap">
+        <input type="text" id="inputUser" placeholder="Digite seu usuário" autocomplete="username" />
+        <span class="login-icon">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+          </svg>
+        </span>
+      </div>
+    </div>
+
+    <div class="login-form-group">
+      <label>Senha</label>
+      <div class="login-input-wrap">
+        <input type="password" id="inputPass" placeholder="Digite sua senha" autocomplete="current-password" />
+        <span class="login-icon" id="togglePass" title="Mostrar/ocultar senha" style="cursor:pointer;">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/>
+            <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/>
+            <line x1="1" y1="1" x2="23" y2="23"/>
+          </svg>
+        </span>
+      </div>
+    </div>
+
+    <button class="login-btn" id="btnLogin">
+      <span class="login-btn-text">Entrar</span>
+      <div class="login-spinner"></div>
+    </button>
+
+    <p class="login-forgot"><a href="#">Esqueceu a senha?</a></p>
+
+    <span class="login-footer-note">© 2026 HubOn · CRECI 17135</span>
+  </div>
+
+  <script>
+    // ── Inject images ──
+    const LOGO_SRC = 'data:image/png;base64,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';
+    const BG_SRC   = 'login_bg.gif';
+
+    document.getElementById('loginLogo').src = LOGO_SRC;
+    document.getElementById('loginBg').src   = BG_SRC;
+
+    // ── Login Logic ──
+    const btnLogin   = document.getElementById('btnLogin');
+    const inputUser  = document.getElementById('inputUser');
+    const inputPass  = document.getElementById('inputPass');
+    const loginError = document.getElementById('loginError');
+    const togglePass = document.getElementById('togglePass');
+
+    // Toggle password visibility
+    togglePass.addEventListener('click', () => {
+      const isPass = inputPass.type === 'password';
+      inputPass.type = isPass ? 'text' : 'password';
+      togglePass.innerHTML = isPass 
+        ? '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>'
+        : '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg>';
+    });
+
+    btnLogin.addEventListener('click', () => {
+      const user = inputUser.value.trim();
+      const pass = inputPass.value.trim();
+
+      loginError.style.display = 'none';
+      btnLogin.classList.add('loading');
+
+      // Simulação de delay de rede
+      setTimeout(() => {
+        if (user === 'admin' && pass === 'hubon2026') {
+          sessionStorage.setItem('hubon_user', JSON.stringify({ name: 'Administrador', role: 'admin' }));
+          window.location.href = 'index.html';
+        } else {
+          btnLogin.classList.remove('loading');
+          loginError.style.display = 'block';
+        }
+      }, 800);
+    });
+
+    // Enter key support
+    [inputUser, inputPass].forEach(el => {
+      el.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') btnLogin.click();
+      });
+    });
+  </script>
+</body>
+</html>

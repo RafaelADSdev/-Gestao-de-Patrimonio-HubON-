@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sistema de Gestão de Patrimônios</title>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="page-wrapper">
+
+    <!-- Barra superior com usuário logado -->
+    <div class="app-topbar" id="appTopbar"></div>
+
+    <!-- TELA 1: LISTAGEM DE NOTEBOOKS -->
+    <div id="screenListing" class="screen active">
+      <!-- Cabeçalho -->
+      <header class="page-header">
+        <div class="header-content">
+          <div>
+            <h1 class="page-title">Sistema de Gestão de Patrimônios</h1>
+            <p class="page-subtitle">Controle e gerenciamento de inventário de ativos</p>
+            <div class="asset-type-selector" style="margin-top: 12px;">
+              <button class="asset-type-btn active" data-type="todos">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
+                </svg>
+                Todos
+              </button>
+              <button class="asset-type-btn" data-type="notebook">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><path d="M2 17h20"/>
+                </svg>
+                Notebooks
+              </button>
+              <button class="asset-type-btn" data-type="celular">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="9" y1="22" x2="15" y2="22"/>
+                </svg>
+                Celulares
+              </button>
+            </div>
+          </div>
+          <div class="logo-container">
+            <img id="companyLogo" class="company-logo" src="HUB ON COR.png" alt="Logo da Empresa" />
+          </div>
+        </div>
+      </header>
+
+      <!-- Barra de ações -->
+      <div class="action-bar card">
+        <div class="search-wrapper">
+          <span class="search-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+          </span>
+          <input
+            type="text"
+            id="searchInput"
+            class="search-input"
+            placeholder="Buscar por patrimônio ou marca/modelo..."
+          />
+        </div>
+        <div class="action-buttons">
+          <button class="btn btn-outline" id="btnFiltros">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>
+            </svg>
+            Filtros
+          </button>
+          <button class="btn btn-outline" id="btnExportar">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+              <polyline points="7 10 12 15 17 10"/>
+              <line x1="12" y1="15" x2="12" y2="3"/>
+            </svg>
+            Exportar
+          </button>
+          <button class="btn btn-primary" id="btnAdicionar">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+            </svg>
+            <span id="btnAdicionarText">Adicionar Patrimônio</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Painel de Filtros -->
+      <div class="filter-panel card" id="filterPanel" style="display:none;">
+        <div class="filter-grid">
+          <div class="filter-group">
+            <label class="filter-label">Status</label>
+            <select class="filter-select" id="filterStatus">
+              <option value="">Todos</option>
+              <option value="Em uso">Em uso</option>
+              <option value="Manutenção">Manutenção</option>
+              <option value="Estoque">Estoque</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label class="filter-label">Departamento</label>
+            <select class="filter-select" id="filterDepartamento">
+              <option value="">Todos</option>
+              <option value="Financeiro">Financeiro</option>
+              <option value="Departamento Pessoal">Departamento Pessoal</option>
+              <option value="Recursos Humanos">Recursos Humanos</option>
+              <option value="Marketing">Marketing</option>
+              <option value="Tecnologia">Tecnologia</option>
+              <option value="Axis">Axis</option>
+              <option value="Pronto Pra Morar">Pronto Pra Morar</option>
+              <option value="Credim">Credim</option>
+              <option value="Serviços Gerais">Serviços Gerais</option>
+              <option value="Secretaria de Vendas">Secretaria de Vendas</option>
+              <option value="Quadripé Center II">Quadripé Center II</option>
+              <option value="Quadripé Center III">Quadripé Center III</option>
+              <option value="Executivo">Executivo</option>
+              <option value="Força de vendas">Força de vendas</option>
+              <option value="Outros">Outros</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label class="filter-label">Ano</label>
+            <select class="filter-select" id="filterAno">
+              <option value="">Todos</option>
+              <option value="2021">2021</option>
+              <option value="2022">2022</option>
+              <option value="2023">2023</option>
+              <option value="2024">2024</option>
+              <option value="2025">2025</option>
+              <option value="2026">2026</option>
+            </select>
+          </div>
+          <div class="filter-actions">
+            <button class="btn btn-outline" id="btnLimparFiltros">Limpar</button>
+            <button class="btn btn-primary" id="btnAplicarFiltros">Aplicar</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Contador -->
+      <p class="result-count" id="resultCount">Mostrando 0 de 0 notebooks</p>
+
+      <!-- Tabela -->
+      <div class="table-card card">
+        <table class="data-table" id="dataTable">
+          <thead>
+            <tr>
+              <th>TIPO</th>
+              <th>PATRIMÔNIO</th>
+              <th>MARCA/MODELO</th>
+              <th>STATUS</th>
+              <th>DEPARTAMENTO</th>
+              <th>RESPONSÁVEL</th>
+              <th>ANO</th>
+              <th>NOTA</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody">
+            <!-- Preenchido via JS -->
+          </tbody>
+          <thead>
+            <tr>
+              <th style="width: 50px;">AÇÕES</th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+    </div>
+
+    <!-- TELA 2: VISUALIZAÇÃO DE NOTEBOOK -->
+    <div id="screenView" class="screen">
+      <div class="form-container card">
+        <!-- Cabeçalho da visualização -->
+        <div class="form-header">
+          <button class="btn-back" id="btnVoltarView">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/>
+            </svg>
+            Voltar
+          </button>
+          <h2 class="form-title" id="viewTitle">Visualizar Notebook</h2>
+          <button class="btn btn-primary" id="btnEditarView" style="margin-left: auto;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+            </svg>
+            Editar
+          </button>
+        </div>
+        <div id="viewContent" style="padding: 24px;"></div>
+      </div>
+    </div>
+
+    <!-- TELA 3: FORMULÁRIO NOVO/EDITAR NOTEBOOK -->
+    <div id="screenForm" class="screen">
+      <div class="form-container card">
+        <!-- Cabeçalho do formulário -->
+        <div class="form-header">
+          <button class="btn-back" id="btnVoltar">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/>
+            </svg>
+            Voltar
+          </button>
+          <h2 class="form-title" id="formTitle">Novo Notebook</h2>
+        </div>
+
+        <!-- Abas do formulário -->
+        <div class="tabs-container">
+          <div class="tabs-nav" id="tabsNav">
+            <button class="tab-btn active" data-tab="tab-identificacao">Identificação Básica</button>
+            <button class="tab-btn notebook-tab" data-tab="tab-hardware">Hardware e Sistema</button>
+            <button class="tab-btn notebook-tab" data-tab="tab-conectividade">Conectividade</button>
+            <button class="tab-btn notebook-tab" data-tab="tab-softwares">Softwares e Acessos</button>
+            <button class="tab-btn celular-tab" data-tab="tab-linha" style="display: none;">Linha e Acessos</button>
+            <button class="tab-btn celular-tab" data-tab="tab-condicao" style="display: none;">Condição Física</button>
+            <button class="tab-btn" data-tab="tab-avaliacao">Avaliação</button>
+          </div>
+
+          <!-- ABA 1: Identificação Básica -->
+          <div class="tab-content active" id="tab-identificacao">
+            <div class="form-grid">
+              <div class="form-group">
+                <label class="form-label">Tipo de Ativo *</label>
+                <select class="form-input" id="formTipoAtivo">
+                  <option value="notebook">Notebook</option>
+                  <option value="celular">Celular</option>
+                </select>
+              </div>
+              <div class="form-group" id="formIMEIGroup" style="display: none; grid-column: 1 / -1;">
+                <label class="form-label">IMEI *</label>
+                <input type="text" class="form-input" id="formIMEI" placeholder="Ex: 123456789012345" />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Número do Patrimônio *</label>
+                <input type="text" class="form-input" id="formPatrimonio" placeholder="Ex: NB-2024-001" />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Marca/Modelo *</label>
+                <input type="text" class="form-input" id="formModelo" placeholder="Ex: Dell Latitude 5420" />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Armazenamento</label>
+                <input type="text" class="form-input" id="formArmazenamento" placeholder="Ex: 256GB SSD" />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Ano de Compra *</label>
+                <input type="number" class="form-input" id="formAno" placeholder="Ex: 2024" min="2000" max="2099" />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Status do Ativo *</label>
+                <select class="form-input" id="formStatus">
+                  <option value="">Selecione...</option>
+                  <option value="Em uso">Em uso</option>
+                  <option value="Manutenção">Manutenção</option>
+                  <option value="Estoque">Estoque</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Departamento *</label>
+                <select class="form-input" id="formDepartamento">
+                  <option value="">Selecione...</option>
+                  <option value="Financeiro">Financeiro</option>
+                  <option value="Departamento Pessoal">Departamento Pessoal</option>
+                  <option value="Recursos Humanos">Recursos Humanos</option>
+                  <option value="Marketing">Marketing</option>
+                  <option value="Tecnologia">Tecnologia</option>
+                  <option value="Axis">Axis</option>
+                  <option value="Pronto Pra Morar">Pronto Pra Morar</option>
+                  <option value="Credim">Credim</option>
+                  <option value="Serviços Gerais">Serviços Gerais</option>
+                  <option value="Secretaria de Vendas">Secretaria de Vendas</option>
+                  <option value="Quadripé Center II">Quadripé Center II</option>
+                  <option value="Quadripé Center III">Quadripé Center III</option>
+                  <option value="Executivo">Executivo</option>
+                  <option value="Força de vendas">Força de vendas</option>
+                  <option value="Outros">Outros</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Responsável Atual</label>
+                <input type="text" class="form-input" id="formResponsavel" placeholder="Nome do responsável" />
+              </div>
+              <div class="form-group form-full">
+                <label class="form-label">Observações do Patrimônio</label>
+                <textarea class="form-input form-textarea" id="formObservacoes" placeholder="Adicione observações..."></textarea>
+              </div>
+            </div>
+          </div>
+
+          <!-- ABA 2: Linha e Acessos (Celular) -->
+          <div class="tab-content" id="tab-linha">
+            <div class="form-grid">
+              <div class="form-group">
+                <label class="form-label">Número da Linha</label>
+                <input type="text" class="form-input" id="formNumeroLinha" placeholder="Ex: (11) 98765-4321" />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Operadora</label>
+                <input type="text" class="form-input" id="formOperadora" placeholder="Ex: Vivo, Claro, Tim, Oi" />
+              </div>
+              <div class="form-group form-full">
+                <label class="form-label">Conta de Nuvem Vinculada</label>
+                <input type="email" class="form-input" id="formContaNuvem" placeholder="Ex: usuario@gmail.com ou apple@icloud.com" />
+              </div>
+              <div class="form-group">
+                <label class="form-label">PIN/Senha de Bloqueio Padrão</label>
+                <input type="text" class="form-input" id="formPINBloqueio" placeholder="Ex: 1234" />
+              </div>
+            </div>
+          </div>
+
+          <!-- ABA 3: Condição Física (Celular) -->
+          <div class="tab-content" id="tab-condicao">
+            <div class="form-grid">
+              <div class="form-group">
+                <label class="form-label">Condição da Tela</label>
+                <select class="form-input" id="formCondicaoTela">
+                  <option value="">Selecione...</option>
+                  <option value="Intacta">Intacta</option>
+                  <option value="Arranhada">Arranhada</option>
+                  <option value="Trincada">Trincada</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Cessórios Fornecidos</label>
+                <input type="text" class="form-input" id="formAcessorios" placeholder="Ex: Capinha, película, carregador" />
+              </div>
+              <div class="form-group form-full">
+                <label class="form-label">Foto do Celular</label>
+                <input type="file" class="form-input" id="formFotoCelular" accept="image/*" />
+              </div>
+              <div id="fotoCelularPreview" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 10px; margin-top: 10px;"></div>
+            </div>
+          </div>
+
+          <!-- ABA 2: Hardware e Sistema -->
+          <div class="tab-content" id="tab-hardware">
+            <div class="form-grid">
+              <div class="form-group">
+                <label class="form-label">Memória RAM</label>
+                <input type="text" class="form-input" id="formRAM" placeholder="Ex: 8GB DDR4" />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Armazenamento</label>
+                <input type="text" class="form-input" id="formArmazenamento" placeholder="Ex: 256GB SSD" />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Placa de Vídeo</label>
+                <input type="text" class="form-input" id="formPlacaVideo" placeholder="Ex: Intel HD Graphics" />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Estado da Bateria</label>
+                <select class="form-input" id="formEstadoBateria">
+                  <option value="">Selecione...</option>
+                  <option value="Funcionando">Funcionando</option>
+                  <option value="Mau contato">Mau contato</option>
+                  <option value="Não tem bateria">Não tem bateria</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Estado do Carregador</label>
+                <input type="text" class="form-input" id="formEstadoCarregador" placeholder="Ex: Funcionando, com avaria..." />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Versão do Windows</label>
+                <select class="form-input" id="formVersaoWindows">
+                  <option value="">Selecione...</option>
+                  <option value="Windows 11">Windows 11</option>
+                  <option value="Windows 10">Windows 10</option>
+                </select>
+              </div>
+              <div class="form-group form-checkbox-group">
+                <label class="form-checkbox">
+                  <input type="checkbox" id="formTecladoFuncionando" />
+                  <span>Teclado funcionando</span>
+                </label>
+              </div>
+              <div class="form-group form-full" id="observacoesTecladoGroup" style="display:none;">
+                <label class="form-label">Observações do Teclado</label>
+                <textarea class="form-input form-textarea" id="formObservacoesTeclado" placeholder="Descreva o problema..."></textarea>
+              </div>
+              <div class="form-group form-checkbox-group">
+                <label class="form-checkbox">
+                  <input type="checkbox" id="formTemLeitora" />
+                  <span>Tem leitor de CD/DVD</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- ABA 3: Conectividade -->
+          <div class="tab-content" id="tab-conectividade">
+            <div class="form-grid">
+              <div class="form-group">
+                <label class="form-label">Tipo de Conexão</label>
+                <select class="form-input" id="formTipoConexao">
+                  <option value="">Selecione...</option>
+                  <option value="Wi-Fi">Wi-Fi</option>
+                  <option value="Não pega">Não pega</option>
+                  <option value="Pega cabo">Pega cabo</option>
+                  <option value="Cabo e Wi-Fi">Cabo e Wi-Fi</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Banda do Wi-Fi</label>
+                <select class="form-input" id="formBandaWiFi">
+                  <option value="">Selecione...</option>
+                  <option value="2.4 GHz">2.4 GHz</option>
+                  <option value="5 GHz">5 GHz</option>
+                </select>
+              </div>
+              <div class="form-group form-checkbox-group">
+                <label class="form-checkbox">
+                  <input type="checkbox" id="formUSBFuncionando" />
+                  <span>USB funcionando</span>
+                </label>
+              </div>
+              <div class="form-group form-full" id="observacoesUSBGroup" style="display:none;">
+                <label class="form-label">Observações de USB</label>
+                <textarea class="form-input form-textarea" id="formObservacoesUSB" placeholder="Descreva o problema..."></textarea>
+              </div>
+              <div class="form-group form-checkbox-group">
+                <label class="form-checkbox">
+                  <input type="checkbox" id="formPrecisaAdaptador" />
+                  <span>Precisa de adaptador?</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- ABA 4: Softwares e Acessos -->
+          <div class="tab-content" id="tab-softwares">
+            <div class="form-grid">
+              <div class="form-group">
+                <label class="form-label">Antivírus</label>
+                <input type="text" class="form-input" id="formAntivirus" placeholder="Ex: Windows Defender, Kaspersky..." />
+              </div>
+              <div class="form-group form-full">
+                <label class="form-label">Pastas do Servidor Interno</label>
+                <textarea class="form-input form-textarea" id="formPastasServidor" placeholder="Liste as pastas do servidor..."></textarea>
+              </div>
+              <div class="form-group form-full">
+                <label class="form-label">Pastas do Dropbox</label>
+                <textarea class="form-input form-textarea" id="formPastasDropbox" placeholder="Liste as pastas do Dropbox..."></textarea>
+              </div>
+              <div class="form-group form-checkbox-group">
+                <label class="form-checkbox">
+                  <input type="checkbox" id="formOfficeInstalado" />
+                  <span>Office Instalado</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- ABA 5: Avaliação -->
+          <div class="tab-content" id="tab-avaliacao">
+            <div class="form-grid">
+              <div class="form-group form-full">
+                <label class="form-label">Nota do Patrimônio (0 a 10)</label>
+                <div class="slider-container">
+                  <input type="range" class="form-slider" id="formNotaSlider" min="0" max="10" step="0.5" value="5" />
+                  <div class="slider-value">
+                    <span id="formNotaValue">5.0</span>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Resumo de Avaliação -->
+              <div class="form-group form-full">
+                <div class="evaluation-summary">
+                  <h3 class="summary-title">Resumo de Avaliação</h3>
+                  
+                  <div class="summary-item">
+                    <span class="summary-label">Estado Geral:</span>
+                    <span class="summary-value" id="estadoGeralValue">Bom</span>
+                  </div>
+                  
+                  <div class="summary-item">
+                    <span class="summary-label">Estado da Bateria:</span>
+                    <span class="summary-value" id="estadoBateriaValue">—</span>
+                  </div>
+                  
+                  <div class="summary-item">
+                    <span class="summary-label">Conectividade:</span>
+                    <span class="summary-value" id="conectividadeValue">—</span>
+                  </div>
+                  
+                  <div class="summary-item">
+                    <span class="summary-label">Sistema:</span>
+                    <span class="summary-value" id="sistemaValue">—</span>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Upload de Fotos -->
+              <div class="form-group form-full">
+                <label class="form-label">Fotos do Notebook</label>
+                <div class="photo-upload">
+                  <input type="file" id="formFotos" multiple accept="image/*" class="photo-input" />
+                  <label for="formFotos" class="photo-label">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+                      <circle cx="12" cy="13" r="4"/>
+                    </svg>
+                    <span>Clique para adicionar fotos</span>
+                  </label>
+                  <div class="photo-preview" id="photoPreview"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Botões do formulário -->
+        <div class="form-footer">
+          <button class="btn btn-outline" id="btnCancelar">Cancelar</button>
+          <button class="btn btn-primary" id="btnSalvar">Salvar</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Botão de ajuda flutuante -->
+  <button class="help-btn" title="Ajuda">?</button>
+
+  <!-- Lightbox para fotos -->
+  <div class="lightbox" id="lightbox" style="display: none;">
+    <span class="lightbox-close" onclick="closeLightbox()">&times;</span>
+    <img class="lightbox-image" id="lightboxImage" src="" alt="Foto expandida" />
+    <div class="lightbox-nav">
+      <button class="lightbox-prev" onclick="prevPhoto()">&lt;</button>
+      <button class="lightbox-next" onclick="nextPhoto()">&gt;</button>
+    </div>
+    <div class="lightbox-counter" id="lightboxCounter"></div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
