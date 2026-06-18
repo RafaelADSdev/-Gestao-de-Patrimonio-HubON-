@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Controle de Acessos – HubOn Patrimônio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="page-wrapper">
+
+    <div class="app-topbar" id="appTopbar"></div>
+
+    <header class="page-header access-header">
+      <div class="header-content">
+        <div>
+          <a href="index.html" class="access-back-link">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/>
+            </svg>
+            Voltar ao patrimônio
+          </a>
+          <h1 class="page-title">Controle de Acessos</h1>
+          <p class="page-subtitle">Gerencie quem pode administrar ou apenas visualizar o inventário</p>
+        </div>
+        <div class="logo-container">
+          <img class="company-logo" src="HUB ON COR.png" alt="Logo da Empresa" />
+        </div>
+      </div>
+    </header>
+
+    <div class="access-grid">
+
+      <section class="card access-form-card">
+        <h2 class="access-card-title">Novo acesso</h2>
+        <p class="access-card-desc">Crie credenciais para um administrador (edita tudo) ou visualizador (somente leitura).</p>
+
+        <div id="accessFormAlert" class="access-alert" hidden></div>
+
+        <form id="formNewUser" class="access-form" autocomplete="off">
+          <div class="form-group">
+            <label class="form-label" for="newUserEmail">Usuário</label>
+            <div class="access-email-wrap">
+              <input type="text" id="newUserEmail" class="form-input" placeholder="nome.sobrenome" required />
+              <span class="access-email-suffix">@hubon.com</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="newUserPassword">Senha</label>
+            <input type="password" id="newUserPassword" class="form-input" placeholder="Mínimo 6 caracteres" minlength="6" required />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Tipo de acesso</label>
+            <div class="access-role-picker">
+              <label class="access-role-option">
+                <input type="radio" name="newUserRole" value="viewer" checked />
+                <span class="access-role-box">
+                  <strong>Visualizador</strong>
+                  <small>Consulta patrimônios sem editar</small>
+                </span>
+              </label>
+              <label class="access-role-option">
+                <input type="radio" name="newUserRole" value="admin" />
+                <span class="access-role-box">
+                  <strong>Administrador</strong>
+                  <small>Cria, edita e exclui ativos</small>
+                </span>
+              </label>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary access-submit-btn" id="btnCreateUser">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/>
+              <line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/>
+            </svg>
+            Criar acesso
+          </button>
+        </form>
+      </section>
+
+      <section class="card access-list-card">
+        <div class="access-list-header">
+          <div>
+            <h2 class="access-card-title">Usuários cadastrados</h2>
+            <p class="access-card-desc">Altere o papel ou remova acessos que não são mais necessários.</p>
+          </div>
+          <button type="button" class="btn btn-outline" id="btnRefreshUsers" title="Atualizar lista">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
+            </svg>
+            Atualizar
+          </button>
+        </div>
+
+        <div id="accessListLoading" class="access-loading">Carregando usuários…</div>
+        <div id="accessListError" class="access-alert access-alert-error" hidden></div>
+
+        <div class="table-card access-table-wrap" id="accessTableWrap" hidden>
+          <table class="data-table access-users-table">
+            <thead>
+              <tr>
+                <th>Usuário</th>
+                <th>Papel</th>
+                <th>Criado em</th>
+                <th>Último acesso</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="accessUsersBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+    </div>
+
+    <aside class="card access-info-card">
+      <h3 class="access-info-title">Papéis de acesso</h3>
+      <ul class="access-info-list">
+        <li><span class="role-badge role-admin">Admin</span> Pode adicionar, editar, excluir patrimônios, fotos e histórico de custódia.</li>
+        <li><span class="role-badge role-viewer">Visualizador</span> Pode consultar a listagem e detalhes, exportar dados e usar filtros.</li>
+      </ul>
+      <p class="access-info-note">O primeiro administrador deve ser definido manualmente no painel do Supabase (Authentication → Users → App Metadata: <code>{"role":"admin"}</code>).</p>
+    </aside>
+
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="auth-email.js"></script>
+  <script src="supabase-config.js"></script>
+  <script src="access-control.js"></script>
+</body>
+</html>

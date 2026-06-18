@@ -1,0 +1,28 @@
+# Dependências e build
+node_modules/
+dist/
+build/
+
+# Ambiente local
+.env
+.env.*
+!.env.example
+
+# Pastas de deploy local (CLI)
+.vercel/
+.netlify/
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editores
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+*.log
+npm-debug.log*
